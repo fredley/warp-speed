@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Warp</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+        <div id='top-bar'>
+            <div id='time-display'>Loading...</div>
+            <div id='coin-display'></div>
+            <div id='nav-buttons'>
+                <button id='vending-button' onclick='htmlInteraction.setTab("vending");'>
+                    Arcade Machine
+                </button>
+                <button id='crafting-button' onclick='htmlInteraction.setTab("crafting");'>
+                    Crafting Bay
+                </button>
+                <button id='lab-button' onclick='htmlInteraction.setTab("lab");'>
+                    Secret Lab
+                </button>
+            </div>
+        </div>
+
+        <div id='second-bar'>
+            <button id='warp-button' onclick='time.warp()'>Warp Time! (3)</button>
+            <button id='save-button' onclick='save.save()'>Save</button>
+            <span id='save-message'></span>
+        </div>
+
+<div id='vending-machine'><pre>
+  _________________________________
+ |                                 |
+ |   WELCOME TO FREDLEY'S ARCADE   |
+ |_________________________________|
+  \_______________________________/
+  |###############################|
+  |#|                           |#|
+  |#|                           |#|
+  |#|                           |#|
+  |#|                           |#|
+  |#|<span id="vend-line-1">          insert           </span>|#|
+  |#|<span id="vend-line-2">           coin            </span>|#|
+  |#|<span id="vend-line-3">                           </span>|#|
+  |#|                           |#|
+  |#|                           |#|
+  |#|                           |#|
+  |###############################|
+  /  a c                   a c    \
+ /    b d     p      p    b d      \
+|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+|________________________________   |
+  \\\\\\\\\\\\\\\\\////////////////
+     |                         |
+     |                         |
+     |                   _     |
+     |                  <span onclick='vending.rummage();'>| |</span>    |
+     |                   ~     |
+     |                         |
+     |                         |
+     |_________________________|
+       ^                     ^
+
+</pre>
+
+<div id='vending-buttons'>
+    <button id='game-1-buy' onclick='vending.buy("game1");'>Insert 1 coin</button>
+    <button id='game-2-buy' onclick='vending.buy("game2");'>Insert 50 coins</button>
+    <button id='game-3-buy' onclick='vending.buy("game3");'>Insert 1000 coins</button>
+    <button id='game-4-buy' onclick='vending.buy("game4");'>Insert 500,000 coins</button>
+    <button id='mult-1-buy' onclick='vending.buy("mult1");'>Buy Coin Multiplier (150 coins)</button>
+    <button id='mult-2-buy' onclick='vending.buy("mult2");'>Double Coins (50,000 coins)</button>
+    <button id='mult-3-buy' onclick='vending.buy("mult3");'>Double Coin Multiplier (1,000,000 coins)</button>
+</div>
+<div id='game-buttons'>
+    <button id='game-1-button' onclick='game1.play();'>Play Asteroid Attack</button>
+    <button id='game-2-button' onclick='game2.play();'>Play Brick Breaker</button>
+    <button id='game-3-button' onclick='game3.play();'>Play Candy Crusade</button>
+    <button id='game-4-button' onclick='game4.play();'>Play Death Duel</button>
+</div>
+
+</div>
+
+<div id="crafting-bay">
+
+<pre id='crafting-robot'>
+                                        _____________________
+              ______ o----             /      |       |      \
+             /o_____{|}--             |   <span id='craft-1'> </span>   |   <span id='craft-2'> </span>   |   <span id='craft-3'> </span>   |
+            / /      o----            |       |       |       |
+           / /                        |-------+-------+-------|
+       ._./ /                         |       |       |       |
+      / _ \/                          |   <span id='craft-4'> </span>   |   <span id='craft-5'> </span>   |   <span id='craft-6'> </span>   |
+      \ _ /                           |       |       |       |
+       | |                            |-------+-------+-------|
+       [ ]                            |       |       |       |
+       | |                            |   <span id='craft-7'> </span>   |   <span id='craft-8'> </span>   |   <span id='craft-9'> </span>   |
+       [ ]                             \______|_______|______/
+       | |
+       [ ]               <span id="crafting-instructions-1">Beep Boop.</span>
+       | |               <span id="crafting-instructions-2">Add ingredients from your inventory to craft.</span>
+._____/___\_____.
+| <span style='display:none'>ORIGAMI</span>ROBOTRON 9001 |
+|_______________|
+  ^           ^
+</pre>
+
+<div id='crafting-inventory'>
+  <button id='craft-btn' onclick="crafting.craft();">CRAFT</button><span id='craft-x'> x </span><input type='text' id='craft-amount' value='1' />
+  <button id='craft-clear-btn' onclick="crafting.clear();">Clear Grid</button>
+  <button id='skip-square' onclick="crafting.skipSquare();">Next Square</button>
+  <button id='inv-coin' onclick="crafting.addItem('coin');">Add Coin (0)</button>
+  <button id='inv-dust' onclick="crafting.addItem('dust');">Add Dust (0)</button>
+  <button id='inv-ingot' onclick="crafting.addItem('ingot');">Add Ingot (0)</button>
+  <button id='inv-brick' onclick="crafting.addItem('brick');">Add Ingot (0)</button>
+  <button id='inv-block' onclick="crafting.addItem('block');">Add Ingot (0)</button>
+  <button id='inv-candy' onclick="crafting.addItem('candy');">Add Ingot (0)</button>
+  <button id='inv-lollipop' onclick="crafting.addItem('lollipop');">Add Ingot (0)</button>
+  <button id='inv-gobstopper' onclick="crafting.addItem('gobstopper');">Add Gobstopper (0)</button>
+  <button id='inv-plate' onclick="crafting.addItem('plate');">Add Plating (0)</button>
+  <button id='inv-hard-plate' onclick="crafting.addItem('hard-plate');">Add Hard Plating (0)</button>
+  <button id='inv-health' onclick="crafting.addPotion('health');">Add Gobstopper (0)</button>
+  <button id='inv-strength' onclick="crafting.addPotion('strength');">Add Gobstopper (0)</button>
+  <button id='inv-regen' onclick="crafting.addPotion('regen');">Add Gobstopper (0)</button>
+  <button id='inv-fire' onclick="crafting.addPotion('fire');">Add Gobstopper (0)</button>
+</div>
+
+<pre id='crafting-codex'>x----------------------------------------x
+| * * * * * * <span id='codex-banner'>CRAFTING CODEX</span> * * * * * * |
+|+---+---+---+---------------------------|
+|| <span id='codex-craft-1'></span> | <span id='codex-craft-2'></span> | <span id='codex-craft-3'></span> |/                         \|
+|+---+---+---+   <span id='codex-desc-1'></span>   |
+|| <span id='codex-craft-4'></span> | <span id='codex-craft-5'></span> | <span id='codex-craft-6'></span> |   <span id='codex-desc-2'></span>   |
+|+---+---+---+   <span id='codex-desc-3'></span>   |
+|| <span id='codex-craft-7'></span> | <span id='codex-craft-8'></span> | <span id='codex-craft-9'></span> |   <span id='codex-desc-4'></span>   |
+|+---+---+---+   <span id='codex-desc-5'></span>   |
+|/          \|   <span id='codex-desc-6'></span>   |
+| <span id='codex-title'></span> |   <span id='codex-desc-7'></span>   |
+|\          /|\                         /|
+x----------------------------------------X
+
+</pre>
+
+<div id='codex-buttons'>
+<button id='codex-prev' onclick='codex.prevPage();'>Previous Entry</button>
+<button id='codex-next' onclick='codex.nextPage();'>Next Entry</button>
+
+</div>
+
+
+</div>
+
+<div id="lab">
+
+<pre id='lab-bench'>     ][              __
+     ][              ||
+     ][              ||
+     ][              ||
+     ][              ||
+     ][              ||
+     ][              || __
+     ][              || ||
+ /\  ][            .-||-||-.
+(o-)=][===========_\_______/_
+ \/  ][            )\_____/(
+     ][           /  ||     \
+     ][          /   ||      \
+     ][         /    ||       \
+     ][        /~~~~~~~~~~~~~~~\
+     ][       /    <span id='bubble-3'> </span> :: <span id='bubble-1'> </span>       \
+     ][      (  <span id='bubble-2'> </span>    ::      <span id='bubble-4'> </span>   )
+     ][       '-----------------`
+     ][         <span id='flame-1'>        )       </span>
+     ][         <span id='flame-2'>      )   (     </span>
+     ][         <span id='flame-3'>   ( . ()       </span>
+     ][         <span id='flame-4'>  )   )@@ ).    </span>
+     ][         <span id='flame-5'>    @)@@(@@ ) ` </span>
+     ][         <span id='flame-6'>     @)@@(@@(   </span>
+     ][         <span id='flame-7'>    @@)@.@(@    </span>
+     ][         <span id='flame-8'>   `)@}__{@( `  </span>
+     ][               :__;
+     ][               +{}
+     ][            .---'`---.             ( = )
+ ____][________   /          \            _| |
+/______________\_(____________)==========|_| |____
+
+</pre>
+
+<div id='center-column'>
+
+<pre id='flask-contents'>
+
+</pre>
+
+<div id='lab-ingredients'>
+  <button id='boil-btn' onclick="lab.boil();">BOIL</button>
+  <button class='lab-1' id='lab-coin' onclick="lab.addItem('coin',1);">Add Coin (0)</button>
+  <button id='lab-coin-10' onclick="lab.addItem('coin',10);">10</button>
+  <button id='lab-coin-100' onclick="lab.addItem('coin',100);">100</button>
+  <button class='lab-1' id='lab-dust' onclick="lab.addItem('dust',1);">Add Dust (0)</button>
+  <button id='lab-dust-10' onclick="lab.addItem('dust',10);">10</button>
+  <button id='lab-dust-100' onclick="lab.addItem('dust',100);">100</button>
+  <button class='lab-1' id='lab-candy' onclick="lab.addItem('candy',1);">Add Candy (0)</button>
+  <button id='lab-candy-10' onclick="lab.addItem('candy',10);">10</button>
+  <button id='lab-candy-100' onclick="lab.addItem('candy',100);">100</button>
+  <button class='lab-1' id='lab-lollipop' onclick="lab.addItem('lollipop',1);">Add Lollipop (0)</button>
+  <button id='lab-lollipop-10' onclick="lab.addItem('lollipop',10);">10</button>
+  <button id='lab-lollipop-100' onclick="lab.addItem('lollipop',100);">100</button>
+  <button class='lab-1' id='lab-gobstopper' onclick="lab.addItem('gobstopper',1);">Add Gobstopper (0)</button>
+  <button id='lab-gobstopper-10' onclick="lab.addItem('gobstopper',10);">10</button>
+  <button id='lab-gobstopper-100' onclick="lab.addItem('gobstopper',100);">100</button>
+  <button class='lab-1' id='lab-health-tonic' onclick="lab.addItem('health-tonic',1);">Add Gobstopper (0)</button>
+  <button id='lab-health-tonic-10' onclick="lab.addItem('health-tonic',10);">10</button>
+  <button id='lab-health-tonic-100' onclick="lab.addItem('health-tonic',100);">100</button>
+  <button class='lab-1' id='lab-strength-tonic' onclick="lab.addItem('strength-tonic',1);">Add Gobstopper (0)</button>
+  <button id='lab-strength-tonic-10' onclick="lab.addItem('strength-tonic',10);">10</button>
+  <button id='lab-strength-tonic-100' onclick="lab.addItem('strength-tonic',100);">100</button>
+  <button class='lab-1' id='lab-regen-tonic' onclick="lab.addItem('regen-tonic',1);">Add Gobstopper (0)</button>
+  <button id='lab-regen-tonic-10' onclick="lab.addItem('regen-tonic',10);">10</button>
+  <button id='lab-regen-tonic-100' onclick="lab.addItem('regen-tonic',100);">100</button>
+  <button class='lab-1' id='lab-fire-tonic' onclick="lab.addItem('fire-tonic',1);">Add Gobstopper (0)</button>
+  <button id='lab-fire-tonic-10' onclick="lab.addItem('fire-tonic',10);">10</button>
+  <button id='lab-fire-tonic-100' onclick="lab.addItem('fire-tonic',100);">100</button>
+</div>
+
+</div>
+
+<pre id='potion-riddles'>
+  ,------------------------------------------,==.
+ /                                          /__  \
+ !                LAB NOTES                 |(_\ /
+ !                                          \-`-'
+ !   For health, split MMX in two to find   /
+ }   your quantities. Chlorine will give    }
+ |   you your ingredients, but remember     \
+ \   to keep it sweet.                      /
+ }                                          {
+ \   For strength, stand in front of a      /
+ }   mirror while making a health potion.   !
+ !                                          {
+ \   Regeneration is more difficult to      /
+ }   accomplish. Gold must be combined in   !
+ |   equal part with a hard substance in a  |
+ !   multiple of Calcium, then the          {
+ \   solution should be brought to the      /
+ }   boil. While simmering, add a tenth of  |
+ }   health potion ingredients. Once the    {
+ \   flask is cool again you should have    /
+ }   your potion.                           !
+ |                                          |
+ \   Fire is initially the same as a        }
+ !   regeneration potion, but only add      /
+ |   half of the initial ingredients.       \
+ }   While simmering, instead of a health   |
+ \   tonic, sprinkle an equal amount of     |
+ }   powder as gold into the mixture.       {____
+ }                                          |__( \
+ \                                          \    /
+  `------------------------------------------`=='
+</pre>
+
+</div>
+
+<pre id="game-area">
+</pre>
+<div id='potion-buttons'>
+  <div class='row'>
+    <button id='drink-health' onclick="inventory.drink('health');">Drink</button>
+    <button id='drink-regen' onclick="inventory.drink('regen');">Add Coin (0)</button>
+    <button id='drink-strength' onclick="inventory.drink('strength');">Add Dust (0)</button>
+    <button id='drink-fire' onclick="inventory.drink('fire');">Add Candy (0)</button>
+  </div>
+  <div class='row'>
+    <button id='drink-health2' onclick="inventory.drink('health2');">Drink</button>
+    <button id='drink-regen2' onclick="inventory.drink('regen2');">Add Coin (0)</button>
+    <button id='drink-strength2' onclick="inventory.drink('strength2');">Add Dust (0)</button>
+    <button id='drink-fire2' onclick="inventory.drink('fire2');">Add Candy (0)</button>
+  </div>
+</div>
+
+<pre id='ending'></pre>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/jquery.js"><\/script>')</script>
+
+        <script src="js/htmlInteraction.js"></script>
+        <script src="js/inventory.js"></script>
+        <script src="js/random.js"></script>
+        <script src="js/time.js"></script>
+        <script src="js/coins.js"></script>
+        <script src="js/vending.js"></script>
+        <script src="js/locations.js"></script>
+        <script src="js/crafting.js"></script>
+        <script src="js/codex.js"></script>
+        <script src="js/lab.js"></script>
+        <script src="js/bonus.js"></script>
+        <script src="js/game1.js"></script>
+        <script src="js/game2.js"></script>
+        <script src="js/bestiary.js"></script>
+        <script src="js/game3.js"></script>
+        <script src="js/game4.js"></script>
+        <script src="js/ending.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/save.js"></script>
+        <script src="js/test.js"></script>
+
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src='//www.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>-->
+
+
+    <div style='display:none'>
+
+      RIP
+ ____________________________________________
+|############################################|
+|#|          ^           ^    |##############|
+|#|   |%|    |    ###    |    |##|````````|##|
+|#|   |||   [|]   MMM   {|}   |##| *+%^S  |##|
+|#|-|-----|-----|-----|-----|-|##| "\>£m" |##|
+|#|                           |##| /\|kf$ |##|
+|#|   /-\   /|\   /=\   /=\   |##|________|##|
+|#|   \_/   \v/   |_|   \=/   |##############|
+|#|-|-----|-----|-----|-----|-|##############|
+|#|                           |##############|
+|#|    I           v          |#|`````````|##|
+|#|   |H|   >X<   >X<   q|p   |#| _______ |##|
+|#|-|-----|-----|-----|-----|-|#| |1|2|3| |##|
+|#|                           |#| |4|5|6| |##|
+|#|          x     |     |    |#| |7|8|9| |##|
+|#|   OoO   oxo   <|>   .|.   |#| ``````` |##|
+|#|-|-----|-----|-----|-----|-|#|[=-----=]|##|
+|#|                           |#|  _   _  |##|
+|#|          _     |    *X*   |#| | | ( ) |##|
+|#|   ~X~   ~O~   o|o   *X*   |#|  ^  ( ) |##|
+|#|-|-----|-----|-----|-----|-|#|     (v) |##|
+|#|                           |#|_________|##|
+|#|                           |##############|
+|############################################|
+|#|||||||||          ||||||||||####```````###|
+|#|||||||||          ||||||||||####\_____/###|
+|############################################|
+\\\\\\\\\\\\\\\\\\\\\\///////////////////////
+ |_________________________________________|
+</div>
+    </body>
+</html>
