@@ -4,7 +4,10 @@ var bonus = {
         0 : {
             // more meteors
             redeem : function(){
-                game1.probability += 0.01;
+                game1.probability = Math.min(game1.probability + 0.01, 0.25);
+                if(game1.probability >= 0.25){
+                    return "Asteroids maxed!";
+                }
                 return "More Asteroids!";
             },
             display : "A"
@@ -13,6 +16,9 @@ var bonus = {
             // more bullets
             redeem : function(){
                 game1.bulletEvery = Math.max(--game1.bulletEvery,3);
+                if(game1.bulletEvery == 3){
+                    return "Bullet speed maxed!";
+                }
                 return "Faster bullets!";
             },
             display : "B"
@@ -24,6 +30,12 @@ var bonus = {
                 game2.startLives = Math.min(game2.startLives + 1,5);
                 game3.startHP = Math.min(Math.ceil(game3.startHP + (500 - game3.startHP)/20 + 1),500);
                 game4.startHP = Math.min(Math.ceil(game4.startHP + (500 - game4.startHP)/20 + 1),500);
+                if(game1.startLives == 5
+                && game2.startLives == 5
+                && game3.startHP == 500
+                && game4.startHP == 500){
+                    return "Lives and Health maxed!";
+                }
                 return "More Lives and Health!";
             },
             display : "H"
@@ -33,7 +45,7 @@ var bonus = {
             redeem : function(){
                 game2.paddleWidth = Math.min(game2.paddleWidth + 1,10);
                 if(game2.paddleWidth == 10){
-                    return "Paddle width maxed!"
+                    return "Paddle width maxed!";
                 }
                 return "Wider Paddle!";
             },
@@ -44,6 +56,10 @@ var bonus = {
             redeem : function(){
                 game1.startTime = Math.min(Math.ceil(game1.startTime + (2400 - game1.startTime)/50 + 10),2400);
                 game2.startTime = Math.min(Math.ceil(game2.startTime + (2400 - game2.startTime)/50 + 10),2400);
+                if(game1.startTime == 2400
+                && game2.startTime == 2400){
+                    return "Game Time maxed!";
+                }
                 return "More Game Time!";
             },
             display : "T"
