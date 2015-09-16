@@ -159,19 +159,19 @@ var inventory = {
             if(inventory.items[item].quantity > 0){
                 htmlInteraction.enableButton('inv-'+item);
                 htmlInteraction.enableButton('lab-'+item);
-                if(this.items[item].quantity >= 10){
-                    htmlInteraction.enableButton('lab-'+item+'-10');
-                }else{
-                    htmlInteraction.disableButton('lab-'+item+'-10');
-                }
-                if(this.items[item].quantity >= 100){
-                    htmlInteraction.enableButton('lab-'+item+'-100');
-                }else{
-                    htmlInteraction.disableButton('lab-'+item+'-100');
-                }
             }else{
                 htmlInteraction.disableButton('inv-'+item);
                 htmlInteraction.disableButton('lab-'+item);
+            }
+            if(inventory.items[item].quantity >= 10){
+                htmlInteraction.enableButton('lab-'+item+'-10');
+            }else{
+                htmlInteraction.disableButton('lab-'+item+'-10');
+            }
+            if(inventory.items[item].quantity >= 100){
+                htmlInteraction.enableButton('lab-'+item+'-100');
+            }else{
+                htmlInteraction.disableButton('lab-'+item+'-100');
             }
             if(crafting.readyToCraft){
                 htmlInteraction.disableButton('inv-'+item);
