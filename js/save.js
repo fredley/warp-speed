@@ -33,15 +33,11 @@ var save = {
       'game4_attack'            : game4.attack,
       'game4_level'             : game4.level
     };
-    localstorage['save_game'] = JSON.stringify(save_data);
-    $('#save-link').css('color','#8FFF00');
-    $('#save-link').animate({
-      color: "#0b0"
-    }, 1000 );
+    localStorage['save_game'] = JSON.stringify(save_data);
   },
 
-  load : function(key){
-    var data = JSON.parse(localstorage['save_game']);
+  load : function(){
+    var data = JSON.parse(localStorage['save_game']);
     main.konamiClaimed       = data['konami_claimed'];
     time.currTime            = data['time'];
     time.setWarps(data['time_warps']);

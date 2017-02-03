@@ -14,18 +14,12 @@ var main = {
         game1.onload();
         // Set up counters
 
-        var key = getURLParameter('key');
-        if(key != null){
+        if(localStorage["save_game"] !== undefined){
             htmlInteraction.setInnerHtml('time-display','Loading...');
-            this.key = key;
-            save.load(key);
+            save.load();
         }else{
             this.bindIntervals();
         }
-
-        $(window).bind('beforeunload', function(){
-            // return "Are you sure you want to leave?"
-        });
     },
 
     bindIntervals : function(){
@@ -38,6 +32,7 @@ var main = {
         // Time
         time.increment();
         codex.blink();
+        save.save();
     },
 
 
